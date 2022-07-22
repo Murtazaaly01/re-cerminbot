@@ -139,10 +139,7 @@ class QbitTorrent:
                             return False
                         try:
                             tor_info = tor_info[0]
-                            if (
-                                tor_info.state == "metaDL"
-                                or tor_info.state == "checkingResumeData"
-                            ):
+                            if tor_info.state in ["metaDL", "checkingResumeData"]:
                                 time.sleep(1)
                             else:
                                 deleteMessage(listener.bot, meta)
@@ -216,7 +213,7 @@ class QbitTorrent:
                     if qbname.endswith(".!qB"):
                         qbname = os.path.splitext(qbname)[0]
                     if self.listener.isZip:
-                        qbname = qbname + ".zip"
+                        qbname = f"{qbname}.zip"
                     if not self.listener.extract:
                         gd = GoogleDriveHelper()
                         qbmsg, button = gd.drive_list(qbname, True)

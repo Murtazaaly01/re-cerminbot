@@ -20,7 +20,7 @@ class MyLogger:
         video = re.search(r'.Merger..Merging formats into..(.*?).$', msg)
         audio = re.search(r'.ExtractAudio..Destination..(.*?)$', msg)
         if video and audio and not self.obj.is_playlist:
-            newname = video.group(1) and audio.group(1)
+            newname = video[1] and audio[1]
             newname = newname.split("/")
             newname = newname[-1]
             self.obj.name = newname
@@ -175,10 +175,12 @@ class YoutubeDLHelper(DownloadHelper):
             ]
         else:
             self.opts['format'] = qual
-        if not self.is_playlist:
-            self.opts['outtmpl'] = f"{path}/{self.name}"
-        else:
-            self.opts['outtmpl'] = f"{path}/{self.name}/%(title)s-%(ext)s"
+        self.opts['outtmpl'] = (
+            f"{path}/{self.name}/%(title)s-%(ext)s"
+            if self.is_playlist
+            else f"{path}/{self.name}"
+        )
+
         self.__download(link)
 
     def cancel_download(self):

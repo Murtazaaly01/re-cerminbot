@@ -178,7 +178,7 @@ def sourceforge(url: str) -> str:
 
 def sourceforge2(url: str) -> str:
     """ Sourceforge Master.dl bypass """
-    return f"{url}" + "?viasf=1"
+    return f"{url}?viasf=1"
 
 
 def anonfiles(url: str) -> str:
@@ -207,8 +207,8 @@ def uptobox(url: str) -> str:
             dl_url = link
         except:
             file_id = re.findall(r'\bhttps?://.*uptobox\.com/(\w+)', url)[0]
-            file_link = 'https://uptobox.com/api/link?token={}&file_code={}'.format(
-                UPTOBOX_TOKEN, file_id)
+            file_link = f'https://uptobox.com/api/link?token={UPTOBOX_TOKEN}&file_code={file_id}'
+
             req = requests.get(file_link)
             result = req.json()
             dl_url = result['data']['dlLink']
@@ -333,8 +333,7 @@ def pixeldrain(url: str) -> str:
         return dl_link
     else:
         raise DirectDownloadLinkException(
-            "ERROR: Tidak dapat mengunduh karena {}.".format(
-                resp.text["value"])
+            f'ERROR: Tidak dapat mengunduh karena {resp.text["value"]}.'
         )
 
 
@@ -375,7 +374,7 @@ def racaty(url: str) -> str:
     return dl_url
 
 
-def fichier(link: str) -> str:  # sourcery no-metrics
+def fichier(link: str) -> str:    # sourcery no-metrics
     """ 1Fichier direct links generator
     Based on https://github.com/Maujar
              https://github.com/SlamDevs/slam-mirrorbot """
@@ -416,16 +415,15 @@ def fichier(link: str) -> str:  # sourcery no-metrics
     elif len(soup.find_all("div", {"class": "ct_warn"})) == 2:
         str_2 = soup.find_all("div", {"class": "ct_warn"})[-1]
         if "you must wait" in str(str_2).lower():
-            numbers = [
+            if numbers := [
                 int(word) for word in str(str_2).split() if word.isdigit()
-            ]
-            if not numbers:
+            ]:
                 raise DirectDownloadLinkException(
-                    "ERROR: 1Fichier berada pada batas.Harap tunggu beberapa menit/jam."
+                    f"ERROR: 1fichier berada pada batas. Tunggu sebentar {numbers[0]} menit."
                 )
             else:
                 raise DirectDownloadLinkException(
-                    f"ERROR: 1fichier berada pada batas. Tunggu sebentar {numbers[0]} menit."
+                    "ERROR: 1Fichier berada pada batas.Harap tunggu beberapa menit/jam."
                 )
         elif "protect access" in str(str_2).lower():
             raise DirectDownloadLinkException(
@@ -438,16 +436,15 @@ def fichier(link: str) -> str:  # sourcery no-metrics
         str_1 = soup.find_all("div", {"class": "ct_warn"})[-2]
         str_3 = soup.find_all("div", {"class": "ct_warn"})[-1]
         if "you must wait" in str(str_1).lower():
-            numbers = [
+            if numbers := [
                 int(word) for word in str(str_1).split() if word.isdigit()
-            ]
-            if not numbers:
+            ]:
                 raise DirectDownloadLinkException(
-                    "ERROR: 1Fichier berada pada batas. Harap tunggu beberapa menit / jam."
+                    f"ERROR: 1fichier berada pada batas. Tunggu sebentar {numbers[0]} menit."
                 )
             else:
                 raise DirectDownloadLinkException(
-                    f"ERROR: 1fichier berada pada batas. Tunggu sebentar {numbers[0]} menit."
+                    "ERROR: 1Fichier berada pada batas. Harap tunggu beberapa menit / jam."
                 )
         elif "bad password" in str(str_3).lower():
             raise DirectDownloadLinkException(
@@ -467,8 +464,7 @@ def solidfiles(url: str) -> str:
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36'
     }
     pageSource = requests.get(url, headers=headers).text
-    mainOptions = str(
-        re.search(r'viewerOptions\'\,\ (.*?)\)\;', pageSource).group(1))
+    mainOptions = str(re.search(r'viewerOptions\'\,\ (.*?)\)\;', pageSource)[1])
     return json.loads(mainOptions)["downloadUrl"]
 
 

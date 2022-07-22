@@ -31,8 +31,8 @@ def dyno_usage(update, context):
         "Authorization": f"Bearer {HEROKU_API_KEY}",
         "Accept": "application/vnd.heroku+json; version=3.account-quotas",
     }
-    path = "/accounts/" + user_id + "/actions/get-quota"
-    epath = "/users/" + user_id
+    path = f"/accounts/{user_id}/actions/get-quota"
+    epath = f"/users/{user_id}"
     session = requests.Session()
     with session as ses:
         with ses.get(heroku_api + path, headers=headers) as r:

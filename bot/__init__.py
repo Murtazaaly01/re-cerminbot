@@ -160,7 +160,7 @@ try:
     parent_id = getConfig("GDRIVE_FOLDER_ID")
     DOWNLOAD_DIR = getConfig("DOWNLOAD_DIR")
     if not DOWNLOAD_DIR.endswith("/"):
-        DOWNLOAD_DIR = DOWNLOAD_DIR + '/'
+        DOWNLOAD_DIR = f'{DOWNLOAD_DIR}/'
     DOWNLOAD_STATUS_UPDATE_INTERVAL = int(
         getConfig('DOWNLOAD_STATUS_UPDATE_INTERVAL'))
     OWNER_ID = int(getConfig('OWNER_ID'))

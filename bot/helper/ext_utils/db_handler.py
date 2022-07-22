@@ -45,9 +45,7 @@ class DbManger:
         if self.err:
             return "There's some error check log for details"
         if chat_id in AUTHORIZED_CHATS:
-            sql = 'UPDATE users SET sudo = TRUE where uid = {};'.format(
-                chat_id
-            )
+            sql = f'UPDATE users SET sudo = TRUE where uid = {chat_id};'
             return self._extracted_from_db_addsudo_10(
                 sql, chat_id, 'Successfully promoted as Sudo'
             )
@@ -69,9 +67,7 @@ class DbManger:
         self.connect()
         if self.err:
             return "There's some error check log for details"
-        sql = 'UPDATE users SET sudo = FALSE where uid = {};'.format(
-            chat_id
-        )
+        sql = f'UPDATE users SET sudo = FALSE where uid = {chat_id};'
         self.cur.execute(sql)
         self.conn.commit()
         self.disconnect()

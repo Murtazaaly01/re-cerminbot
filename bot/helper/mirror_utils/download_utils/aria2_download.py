@@ -34,7 +34,7 @@ class AriaDownloadHelper:
                 LOGGER.info("Checking File/Folder if already in Drive...")
                 sname = aria2.get_download(gid).name
                 if dl.getListener().isZip:
-                    sname = sname + ".zip"
+                    sname = f"{sname}.zip"
                 if not dl.getListener().extract:
                     gdrive = GoogleDriveHelper()
                     smsg, button = gdrive.drive_list(sname, True)
@@ -92,8 +92,7 @@ class AriaDownloadHelper:
     @new_thread
     def __onDownloadStopped(self, api, gid):
         sleep(4)
-        dl = getDownloadByGid(gid)
-        if dl:
+        if dl := getDownloadByGid(gid):
             dl.getListener().onDownloadError("Torrent mati!")
 
     @new_thread
